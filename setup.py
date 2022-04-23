@@ -1,6 +1,6 @@
-import setuptools
+from setuptools import setup
 
-setuptools.setup(
+setup(
     name="pdpf",
     version="0.0.1",
     author="mirucaaura",
