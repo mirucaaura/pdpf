@@ -20,4 +20,5 @@ plt.xlabel('iter')
 plt.ylabel('objective value')
 plt.plot(model.res.fun, marker='o')
 plt.grid(True)
+plt.rcParams["svg.fonttype"] = "none"
 plt.savefig('./figs/small.svg')
