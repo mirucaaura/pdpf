@@ -6,5 +6,6 @@ setup(
     author="mirucaaura",
     description="python implementation of Primal-Dual Path-Following for linear programming",
     packages=setuptools.find_packages("src"),
-    package_dir={"": "src"}
+    package_dir={"": "src"},
+    python_requires='>=3.7',
 )

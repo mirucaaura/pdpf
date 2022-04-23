@@ -1,10 +1,12 @@
 import numpy as np
+from scipy.optimize import OptimizeResult
 
 class PrimalDual:
     def __init__(self, c, A, b):
         self.c = c
         self.A = A
         self.b = b
+        self.res = None
 
     def make_Mq_from_cAb(self):
         m, k = self.A.shape
@@ -61,57 +63,57 @@ class PrimalDual:
                 th_low = th_mid
             else:
                 th_high = th_mid
-            # print('th_high =', th_high)
-            # print('th_low =', th_low)
 
         return th_low
 
 
-    def solve(self, MEPS=1.0e-10):
+    def minimize(self, MEPS=1.0e-10):
         (M0, q0) = self.make_Mq_from_cAb()
         (M, q, x, z) = self.make_artProb_initialPoint()
         m, k = self.A.shape
         n, n = M.shape
 
         mu_log = []
+        th_log = []
 
         count = 0
         mu = np.dot(z, x) / n
-        print('初期目的関数値:', mu)
         while mu > MEPS:
             count += 1
-            print(count, '回目', end=' ')
-            # 予測ステップ
+            # predication steps
             delta = 0
-            # dx = np.dot(np.linalg.inv(M + np.diag(z/x)), delta* mu * (1/x) - z)
             dx = np.linalg.solve(M + np.diag(z/x), delta* mu * (1/x) - z)
             dz = delta * mu * (1/x) - z - np.dot(np.diag(1/x), z * dx)
             th = self.binarysearch_theta(x, z, dx, dz)
-            print('theta =', th, end=' ')
+            th_log.append(th)
             x = x + th * dx
             z = z + th * dz
             mu = np.dot(z, x) / n
-            # 修正ステップ
+            # correction steps
             delta = 1
-            # dx = np.dot(np.linalg.inv(M + np.diag(z/x)), delta * mu * (1/x) - z)
             dx = np.linalg.solve(M + np.diag(z/x), delta * mu * (1/x) - z)
             dz = delta * mu * (1/x) - z - np.dot(np.diag(1/x), z * dx)
             x = x + dx
             z = z + dz
             mu = np.dot(z, x) / n
-            print('目的間数値:', mu)
-            # print('修正ステップ：暫定解(primal):', x[m:m+k]/x[n-2])
-
             mu_log.append(mu)
-
+    
         if x[n - 2] > MEPS:
             # print('Optimal solution:', x[m:m+k]/x[n-2], 'has found.')
-            print('Optimal value = ', np.dot(self.c, x[m:m+k]/x[n-2]))
+            # print('Optimal value = ', np.dot(self.c, x[m:m+k]/x[n-2]))
             # print('Optimal solution (dual):', x[:m]/x[n-2], 'has found.')
-            print('Optimal value (dual) = ', np.dot(self.b, x[:m]/x[n-2]))
+            # print('Optimal value (dual) = ', np.dot(self.b, x[:m]/x[n-2]))
             
-            # self.obj_log = mu_log
-            # self.res['optimal_value'] = np.dot(self.c, x[m:m+k]/x[n-2])
-            # self.res['optimal_sol'] = x[m:m+k]/x[n-2]
+            self.res = OptimizeResult()
+            self.res.x = x[m:m+k]/x[n-2]
+            self.res.success = True
+            self.message = 'Optimization terminated successfully.'
+            self.res.status = 0
+            self.res.fun = np.array(mu_log)
+            self.res.nit = count
+        else:
+            self.res = OptimizeResult()
+            self.res.success = False
+            self.message = 'NaN result encountered.'
 
-        return mu_log
+        return np.array(th_log)
