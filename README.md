@@ -71,3 +71,19 @@ plt.grid(True)
 
 <img src="figs/small.svg" />
 
+When calling `minimize()` with `verbose=1`, the output looks like as follows:
+
+```shell
+>>> model.minimize(verbose=1)
+Iter    theta           f(x)
+   1    5.6604e-01      4.3396e-01
+   2    5.5593e-01      1.9271e-01
+   3    6.2207e-01      7.2829e-02
+   4    6.9286e-01      2.2369e-02
+   5    7.4952e-01      5.6029e-03
+   6    8.7099e-01      7.2280e-04
+   7    9.7587e-01      1.7441e-05
+   8    9.9896e-01      1.8188e-08
+   9    9.9902e-01      1.7763e-11
+```
+
