@@ -37,7 +37,7 @@ A = np.array([[3, 1, 2],
 b = np.array([60, 36, 48])
 ```
 
-Optimize
+Optimize:
 
 ```python
 model = PrimalDual(c, A, b)
@@ -47,7 +47,7 @@ model.minimize()
 Results can be shown by `model.res`:
 
 ```shell
-$ print(model.res)
+>>> print(model.res)
      fun: array([4.33959524e-01, 1.92708144e-01, 7.28293862e-02, 2.23690150e-02,
        5.60288941e-03, 7.22804096e-04, 1.74412233e-05, 1.81881297e-08,
        1.77633299e-11])
