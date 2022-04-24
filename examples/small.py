@@ -11,7 +11,7 @@ b = np.array([60, 36, 48])
 
 
 model = PrimalDual(c, A, b)
-model.minimize(MEPS=1.0e-10)
+model.minimize(MEPS=1.0e-10, verbose=1)
 
 print(model.res)
 
@@ -19,6 +19,7 @@ plt.figure(figsize=[6, 4])
 plt.xlabel('iter')
 plt.ylabel('objective value')
 plt.plot(model.res.fun, marker='o')
+plt.yscale('log')
 plt.grid(True)
 plt.rcParams["svg.fonttype"] = "none"
-plt.savefig('./figs/small.svg')
+plt.savefig('small.svg')
