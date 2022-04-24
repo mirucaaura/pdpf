@@ -70,3 +70,4 @@ plt.grid(True)
 ```
 
 <img src="figs/small.svg" />
+

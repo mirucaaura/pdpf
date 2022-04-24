@@ -15,10 +15,16 @@ model.minimize(MEPS=1.0e-10, verbose=1)
 
 print(model.res)
 
+# optimal solution
+print('The optimal value is {}'.format(model.res.x))
+
+# dual solution
+print('A dual solution is {}'.format(model.dual))
+
 plt.figure(figsize=[6, 4])
 plt.xlabel('iter')
 plt.ylabel('objective value')
-plt.plot(model.res.fun, marker='o')
+plt.plot(np.arange(1, model.res.nit+1), model.res.fun, marker='o')
 plt.yscale('log')
 plt.grid(True)
 plt.rcParams["svg.fonttype"] = "none"
