@@ -58,3 +58,14 @@ Results can be shown by `model.res`:
        x: array([12.,  8.,  8.])
 ```
 
+The history of objective functions can be obtained as follows:
+
+```python
+plt.figure(figsize=[6, 4])
+plt.xlabel('iter')
+plt.ylabel('objective value')
+plt.plot(model.res.fun, marker='o')
+plt.grid(True)
+```
+
+<img src="figs/small.svg" />
