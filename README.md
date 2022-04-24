@@ -65,6 +65,7 @@ plt.figure(figsize=[6, 4])
 plt.xlabel('iter')
 plt.ylabel('objective value')
 plt.plot(model.res.fun, marker='o')
+plt.yscale('log')
 plt.grid(True)
 ```
 
