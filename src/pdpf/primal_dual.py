@@ -7,6 +7,7 @@ class PrimalDual:
         self.A = A
         self.b = b
         self.res = None
+        self.dual = None
 
     def make_Mq_from_cAb(self):
         m, k = self.A.shape
@@ -67,7 +68,24 @@ class PrimalDual:
         return th_low
 
 
-    def minimize(self, MEPS=1.0e-10):
+    def minimize(self, MEPS=1.0e-10, verbose=0):
+        """
+        Minimize a function using primal-dual path-following algorithm.
+
+        Parameters
+        ----------
+        MEPS : float, optinal
+            Stop when the gap between primal objective value and dual objective value
+        verbose : int
+            Integer value with logging level.
+
+            0: no logging.
+
+            1: display the value of theta and the value of objective function.
+        """
+        if verbose not in [0, 1]:
+            raise ValueError("`verbose` must be in [0, 1, 2].")
+
         (M0, q0) = self.make_Mq_from_cAb()
         (M, q, x, z) = self.make_artProb_initialPoint()
         m, k = self.A.shape
@@ -97,6 +115,16 @@ class PrimalDual:
             z = z + dz
             mu = np.dot(z, x) / n
             mu_log.append(mu)
+
+            if verbose >= 1:
+                if count == 1:
+                    print('{0:7s}{1:16s}{2:13s}'.format('Iter', ' theta', ' f(x)')
+                            )
+                print('{0:4d}\t{1:.4e}\t{2:.4e}'
+                        .format(
+                            count,
+                            th,
+                            mu))
     
         if x[n - 2] > MEPS:
             # print('Optimal solution:', x[m:m+k]/x[n-2], 'has found.')
@@ -104,10 +132,11 @@ class PrimalDual:
             # print('Optimal solution (dual):', x[:m]/x[n-2], 'has found.')
             # print('Optimal value (dual) = ', np.dot(self.b, x[:m]/x[n-2]))
             
+            self.dual = x[:m]/x[n-2]
             self.res = OptimizeResult()
             self.res.x = x[m:m+k]/x[n-2]
             self.res.success = True
-            self.message = 'Optimization terminated successfully.'
+            self.res.message = 'Optimization terminated successfully.'
             self.res.status = 0
             self.res.fun = np.array(mu_log)
             self.res.nit = count
