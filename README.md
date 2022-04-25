@@ -3,7 +3,7 @@ python implementation of Primal-Dual Path-Following for Linear Programming
 
 ## Instrallation
 
-`pdpf` is available on PyPI, and can be installed with
+`pdpf` can be installed with
 
 ```shell
 pip install git+https://github.com/mirucaaura/pdpf.git
