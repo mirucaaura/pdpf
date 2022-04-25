@@ -1,5 +1,7 @@
 # pdpf
-python implementation of Primal-Dual Path-Following for Linear Programming
+python implementation of Primal-Dual Path-Following for Linear Programming.
+
+This package enables us to solve Linear Programming whose format is `min <c,x> s.t. Ax>=b, x>=0`.
 
 ## Instrallation
 
