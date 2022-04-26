@@ -1,13 +1,13 @@
 import numpy as np
 from scipy.optimize import OptimizeResult
 
+
 class PrimalDual:
     def __init__(self, c, A, b):
         self.c = c
         self.A = A
         self.b = b
         self.res = None
-        self.dual = None
 
     def make_Mq_from_cAb(self):
         m, k = self.A.shape
@@ -132,7 +132,6 @@ class PrimalDual:
             # print('Optimal solution (dual):', x[:m]/x[n-2], 'has found.')
             # print('Optimal value (dual) = ', np.dot(self.b, x[:m]/x[n-2]))
             
-            self.dual = x[:m]/x[n-2]
             self.res = OptimizeResult()
             self.res.x = x[m:m+k]/x[n-2]
             self.res.success = True
@@ -140,6 +139,7 @@ class PrimalDual:
             self.res.status = 0
             self.res.fun = np.array(mu_log)
             self.res.nit = count
+            self.res.dual = x[:m]/x[n-2]
         else:
             self.res = OptimizeResult()
             self.res.success = False
