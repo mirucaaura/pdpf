@@ -21,7 +21,7 @@ pip install git+https://github.com/mirucaaura/pdpf.git
 
 We give an example on how to use this package.
 
-First, import packages:
+First, import packages as follows:
 
 ```python
 import numpy as np
